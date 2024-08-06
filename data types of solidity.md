@@ -55,3 +55,185 @@ The result is : "false". As you can see from the code of contract, we only defin
 member, this is mechanism from smart contract, it automatically create a method with the same name as the public member and it will return the value of the member, by default all public member initialized to 0 of its type,
 that is to say boolean type will init to false, integer type will to 0, and address type will be 0x0000000000000000000000000000000000000000.
 
+The other most used data type is integer, solidity has two kind of integers: signed integer, and unsigned integer. If you don't init integer type member in the contract, they will be initialized to 0, integer has their own 
+subcategory such as int8, int16, int32, int256, and uint8, uint16...uint256, the int8 and uint will use 1 byte and int16 and uint16 used 2 bytes up to int256 and uint256 used 8 bytes.
+for example we change the
+code for previous smart contract as following:
+```sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract DataType {
+    bool public myBool;
+    uint8 public myUint8;
+
+    function setMyUint8(val uint8) public {
+        myUint8 = val;
+        /*
+        it is not allowed to assigned value to different integer type such as
+        uint16 val = 256;
+        myUint8 = val; //error,
+        */
+    }
+
+ function increaseMyUint8() public {
+        //what happend if it bigger than 255?
+        myUint8++;
+    }
+
+function decreaseMyUint8() public {
+        //what happend if it smaller than 0
+        myUint8--;
+    }
+}
+```
+
+Let's compile and deploy it to hardhat and verify with the contract, the key point is , we will set the value of myUint8 to 253 then increase it over 255 and see what happend, and set it to 2 which near 0 and decrease its value
+to negative and see what happend, when we call increaseMyUint8 until the value of myUint8 bigger than 255, we will get the following error:
+```sol
+ProviderError: Error: VM Exception while processing transaction: reverted with panic code 0x11 (Arithmetic operation overflowed outside of an unchecked block)
+```
+The same will happend when we decrease its value smaller than 0. We very careful to prevent such low level error, trust me if you make such silly errors you will get fired by your boss. The other useful data type are string
+and array, when we handling string we will meet a new keyword which is "memory", first we change our contract as following:
+```sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract DataType {
+    bool public myBool;
+    uint8 public myUint8;
+    string public myString = "hello world";
+
+    function setMyUint8(uint8 val) public {
+        myUint8 = val;
+        /*
+        it is not allowed to assigned value to different integer type such as
+        uint16 val = 256;
+        myUint8 = val; //error,
+        */
+    }
+
+    function increaseMyUint8() public {
+        //what happend if it bigger than 255?
+        myUint8++;
+    }
+
+    function decreaseMyUint8() public {
+        //what happend if it smaller than 0
+        myUint8--;
+    }
+
+    function setMyString(string memory _myString) public {
+        /*
+        There are two kinds of data storage in smart contract of string,
+        one is memory, one is storage. storage just like save your data 
+        on some kind of database, you can't change such data directly, you
+        need to use some special methods to change them and saving data in such
+        way will cause you more money. using memory is just like saving data in
+        RAM, you can change them quickly and easily and such saving will not cost
+        you too much money.
+        */
+        myString = _myString;
+    }
+
+    function compareTwoString(
+        string memory _myString
+    ) public view returns (bool) {
+        /*
+        view means this method will not change the state or members of the contract,
+        just like const in c++,this will help compiler to optimize the code and make
+        the binary smaller and save more money
+
+        There is not way to compare string by using == as other langague, we need
+        to using hash function to hash the two string into values and compare
+
+        keccak256 is most useful hash function for smart contract
+        and abi.encodePacked just change a string into binary bytes array
+        such as "AABB" will change to 0x414142420000000.....
+        */
+
+        return
+            keccak256(abi.encodePacked(myString)) ==
+            keccak256(abi.encodePacked(_myString));
+    }
+}
+
+```
+Compile and deploy the contract and calling compareTwoString and get result as following:
+
+![截屏2024-08-07 00 00 05](https://github.com/user-attachments/assets/425bf23c-c385-4b81-957d-fb7732760ed9)
+
+There is another data type name bytes, which is byte array, we can assign string to such data type member and it will automatically change the string into ascii code or unicode if the string contains none lati character, 
+for example we change the code of contract to following:
+```sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract DataType {
+    bool public myBool;
+    uint8 public myUint8;
+    string public myString = "hello world";
+    bytes public myBytes = "hello world";
+
+    function setMyUint8(uint8 val) public {
+        myUint8 = val;
+        /*
+        it is not allowed to assigned value to different integer type such as
+        uint16 val = 256;
+        myUint8 = val; //error,
+        */
+    }
+
+    function increaseMyUint8() public {
+        //what happend if it bigger than 255?
+        myUint8++;
+    }
+
+    function decreaseMyUint8() public {
+        //what happend if it smaller than 0
+        myUint8--;
+    }
+
+    function setMyString(string memory _myString) public {
+        /*
+        There are two kinds of data storage in smart contract of string,
+        one is memory, one is storage. storage just like save your data 
+        on some kind of database, you can't change such data directly, you
+        need to use some special methods to change them and saving data in such
+        way will cause you more money. using memory is just like saving data in
+        RAM, you can change them quickly and easily and such saving will not cost
+        you too much money.
+        */
+        myString = _myString;
+    }
+
+    function compareTwoString(
+        string memory _myString
+    ) public view returns (bool) {
+        /*
+        view means this method will not change the state or members of the contract,
+        just like const in c++,this will help compiler to optimize the code and make
+        the binary smaller and save more money
+
+        There is not way to compare string by using == as other langague, we need
+        to using hash function to hash the two string into values and compare
+
+        keccak256 is most useful hash function for smart contract
+        and abi.encodePacked just change a string into binary bytes array
+        such as "AABB" will change to 0x414142420000000.....
+        */
+
+        return
+            keccak256(abi.encodePacked(myString)) ==
+            keccak256(abi.encodePacked(_myString));
+    }
+}
+
+```
+
+Compile and deploy it and we can get myBytes as following:
+
+![截屏2024-08-07 00 12 05](https://github.com/user-attachments/assets/07c9b640-e4c1-421f-aafe-5c0a0c811282)
+
+
+
