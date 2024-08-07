@@ -324,7 +324,25 @@ await contract.myAddress()
 At the last line we get the balance for account 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC and the amount for this account is 10^18 wei. Lastly we check the msg object and the sender field in this object, let's use some code
 to interact with the msg object, as we have seen before, msg.sender records the caller address of the contract, let's try to call a method of the contract and check the caller address by using following code:
 ```sol
+contract DataType {
+    ....
+     function getCallerAddress() public view returns (address) {
+        //show who calls this method
+        return msg.sender;
+    }
+}
 ```
+Then compile and deploy. After deploying the contract I get my contract address and deployer address as following:
+```js
+DataType contract address:  0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44
+Deployer address:  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+```
+Then in the console I call the getCallerAddress and get the following result:
 
+![截屏2024-08-07 16 40 13](https://github.com/user-attachments/assets/b9845ac1-c5ac-488c-8469-c8e9134a8a6a)
+
+You can see that the result returned by getCallerAddress is exactly the deployer address! 
+
+That's all for the introduction of basic type for solidity, in next section let's do a small project for solidity which is brocasting messeges to the whole blockchain network.
 
 
