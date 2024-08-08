@@ -345,4 +345,97 @@ You can see that the result returned by getCallerAddress is exactly the deployer
 
 That's all for the introduction of basic type for solidity, in next section let's do a small project for solidity which is brocasting messeges to the whole blockchain network.
 
+Finally we using a small project to wrap up this section. We will going to design a contract named manager, it will provided a visit method, when the visitor is the deployer, it will report how many guests have visited,
+if the visitor is guest, it will only say hello, the code is like following:
+```sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.12;
+//convert number to string
+import "@openzeppelin/contracts/utils/Strings.sol";
+
+contract Manager {
+    string public message;
+    uint public visitorCount;
+    address private owner;
+
+    constructor() {
+        /*
+        it is better to initialize members in contructor because we can send data
+        to init them instead of fix the initialization value 
+        */
+        owner = msg.sender;
+        visitorCount = 0;
+    }
+
+    function greetVisitor() public pure returns (string memory) {
+        /*
+        if the function has nothing to do with the contract members, such as not reading
+        or writing to contract members, then we can set it to pure
+        */
+
+        return "Hi, welcome to our smart contract";
+    }
+
+    //solidity is not allow to return
+    function visit(address visitor) public {
+        /*
+        sol
+        */
+        if (visitor == owner) {
+            string memory msg1 = "hi boss, there are ";
+            string memory count = Strings.toString(visitorCount);
+            string memory msg2 = " of visitors coming";
+            string memory result = string.concat(msg1, count);
+            result = string.concat(result, msg2);
+            message = result;
+            return;
+        } else {
+            visitorCount += 1;
+        }
+
+        message = greetVisitor();
+    }
+}
+
+
+```
+
+Let's write the deploy script for the contract aboved with name deploy_manager.js:
+```js
+const { ethers } = require("hardhat")
+async function main() {
+    const [deployer] = await ethers.getSigners()
+    const dataTypeContractFactory = await ethers.getContractFactory("Manager")
+    const contract = await dataTypeContractFactory.deploy()
+    await contract.waitForDeployment()
+
+    console.log("Manager contract address: ", contract.target)
+    console.log("Manager address: ", deployer.address)
+}
+
+try {
+    main()
+} catch (err) {
+    console.err(err)
+    process.exitCode = 1
+}
+```
+Then we compile and deploy the contract to hardhat virtual machie, and we go to the console and interact with the contract as following:
+```so
+>let contract = await ethers.getContractAt("Manager", "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0")
+>await contract.visitorCount()
+0n
+>await contract.visit("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
+> await contract.message()
+'Hi, welcome to our smart contract'
+> await contract.message()
+'hi boss, there are 1 of visitors coming'
+> await contract.visit("0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC")
+> await contract.message()
+'Hi, welcome to our smart contract'
+> await contract.visit("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
+await contract.message()
+'hi boss, there are 2 of visitors coming'
+```
+
 
