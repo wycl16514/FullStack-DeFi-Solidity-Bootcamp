@@ -1,0 +1,82 @@
+.exit
+await accounter.getContractBalance()
+await accounter.totalBalance()
+await accounter.takeAll()
+await accounter.connect("0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65")
+await accounter.totalBalance()
+await accounter.takeAll()
+await accounter.connect("0x90F79bf6EB2c4f870365E785982E1f101E93b906")
+await accounter.totalBalance()
+await accounter.saving({value: ethers.parseEther("3.0")})
+await accounter.connect("0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC")
+await accounter.totalBalance()
+await accounter.saving({value: ethers.parseEther("2.0")})
+await accounter.connect("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
+await accounter.totalBalance()
+let accounter = await ethers.getContractAt("Accounter", "0x5FbDB2315678afecb367f032d93F642f64180aa3")
+.exit
+await contract.call
+await contract
+contract.call
+await contract.payedMsg()
+await contract.updatePayedMsg("pay with 2.0 ethers", {value:ethers.parseEther("0.5")})
+await contract.payedMsg()
+await contract.updatePayedMsg("pay with 2.0 ethers", {value:ethers.parseEther("2.0")})
+await contract.updatePayedMsg("pay with 2.0 ethers", {value:ethers.parseEther("2.0")}
+await contract.connect("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
+let contract = await ethers.getContractAt("Manager","0x5FbDB2315678afecb367f032d93F642f64180aa3")
+.exit
+await contract.message()
+await contract.visit("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
+await contract.message()
+await contract.visit("0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC")
+await contract.message()
+await contract.visit("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
+await contract.message()
+await contract.visit("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
+await contract.greetVisitor()
+await contract.owner()
+await contract.visitorCount()
+let contract = await ethers.getContractAt("Manager", "0x5FbDB2315678afecb367f032d93F642f64180aa3")
+.exit
+await contract.getCallerAddress()
+await contract.getAddressBalance()
+await contract.myAddress()
+await contract.myAddress
+let contract = await ethers.getContractAt("DataType", "0x610178dA211FEF7D417bC0e6FeD39F05609AD788")
+.exit
+await contract.myBytes()
+let contract = await ethers.getContractAt("DataType", "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318")
+.exit
+await contract.compareTwoString("hello world")
+await contract.myString()
+let contract = await ethers.getContractAt("DataType", "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6")
+.exit
+await contract.decreaseUint8()
+await contract.decreaseUnit8()
+await contract.myUint8()
+await contract.setMyUint8(0)
+await contract.increaseUint8()
+await contract.myUint8()
+await contract.increaseUint8()
+await contract.myUint8()
+await contract.setMyUint8(254)
+await contract.myUint8()
+let contract = await ethers.getContractAt("DataType", "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0")
+.exit
+await contract.myBool()
+await contract.myBool
+let contract = await ethers.getContractAt("DataType", "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512")
+.exit
+await contract.myBool
+let contract = await ethers.getContractAt("DataType", "0x5FbDB2315678afecb367f032d93F642f64180aa3")
+.exit
+exit
+await contract.totalSupply()
+await contract.symbol()
+await contract.name()
+contract.target
+const contract = await ethers.getContractAt("SimpleDeFiToken", "0x5FbDB2315678afecb367f032d93F642f64180aa3")
+.exit
+const contract = await ethers.getContractAt("SimpleDeFiToken", "0x5FbDB2315678afecb367f032d93F642f64180aa3")
+const contract = await ehters.getContractAt("SimpleDeFiToken", "0x5FbDB2315678afecb367f032d93F642f64180aa3")
