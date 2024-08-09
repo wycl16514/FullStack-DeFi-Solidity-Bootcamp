@@ -95,3 +95,56 @@ And call the function with sending given amount of money:
 > await contract.payedMsg()
 'pay with 2.0 ethers'
 ```
+
+Let's go to another small project named Accounter, it will receive deposit for given customer, and someone can withdraw all balance of the contract at one time, we will going to check
+customer legality in futher sections, create a new file name Accounter.sol, and add the following code:
+```sol
+//SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.12;
+
+contract Accounter {
+    uint public totalBalance;
+
+    constructor() {
+        totalBalance = 0;
+    }
+
+    function saving() public payable {
+        totalBalance += msg.value;
+    }
+
+    function getContractBalance() public view returns (uint) {
+        //keyword this point to the current contract instance
+        return address(this).balance;
+    }
+
+    function takeAll() public {
+        address payable to = payable(msg.sender);
+        to.transfer(getContractBalance());
+    }
+
+    function takeToAddress(address payable to) public {
+        to.transfer(getContractBalance());
+    }
+}
+```
+Compile and deploy the contract and we will interact with it in the console as following way:
+```sol
+> let accounter = await ethers.getContractAt("Accounter", "0x0165878A594ca255338adfa4d48449f69242Eb8F")
+undefined
+> await accounter.getContractBalance()
+0n
+> await accounter.connect("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
+> await accounter.saving({value:ethers.parseEther("2.0")})
+> await accounter.getContractBalance()
+2000000000000000000n
+> await accounter.connect("0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC")
+> await accounter.saving({value: ethers.parseEther("3.0")})
+> await accounter.getContractBalance()
+5000000000000000000n
+> await accounter.connect("0x90F79bf6EB2c4f870365E785982E1f101E93b906")
+> await accounter.takeAll()
+> await accounter.getContractBalance()
+0n
+```
